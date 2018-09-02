@@ -5,7 +5,8 @@
   "scripts": {
     "tsc": "tsc",
     "copyfiles": "copyfiles",
-    "start": "tsc --build tsconfig.json && copyfiles -u 1 src/wwwroot/**.* dist && node dist/index.js"
+    "start": "tsc --build tsconfig.json && copyfiles -u 1 src/wwwroot/**.* dist && node dist/index.js",
+    "build": "tsc --build tsconfig.json && copyfiles -u 1 src/wwwroot/**.* dist"
   },
   "author": "XuPeiYao",
   "license": "MIT",
