@@ -1,0 +1,19 @@
+{
+  "name": "dynamic-fonts2",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "tsc": "tsc",
+    "start": "tsc --build tsconfig.json && node dist/index.js"
+  },
+  "author": "XuPeiYao",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.3",
+    "fontmin": "^0.9.7-beta"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "typescript": "^3.0.3"
+  }
+}
