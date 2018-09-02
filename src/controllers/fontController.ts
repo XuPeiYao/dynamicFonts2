@@ -2,8 +2,11 @@ import * as express from 'express';
 import * as fontmin from 'fontmin';
 import { ControllerBase } from '../base/controllerBase';
 import * as fs from 'fs';
+import { route, httpGet } from '../middlewares/controllerMiddleware';
 
+@route('/api/Font')
 export class FontController extends ControllerBase {
+  @httpGet('/testMethod')
   public get(request: express.Request, response: express.Response) {
     fs.readdir('fonts', (err, files) => {
       response.json(
@@ -17,6 +20,7 @@ export class FontController extends ControllerBase {
       );
     });
   }
+
   public post(request: express.Request, response: express.Response) {
     console.info('%s 要求產生字體 %s', request.ip, request.params.fontName);
 
