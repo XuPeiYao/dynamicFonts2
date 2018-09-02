@@ -5,6 +5,7 @@ import { cors } from './middlewares/corsMiddleware';
 import { ControllerBase } from './base/controllerBase';
 const app = express();
 
+app.use(express.static('dist/wwwroot'));
 // Body 處理middleware
 app.use(express.json());
 // CORS
