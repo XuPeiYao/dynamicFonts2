@@ -12,11 +12,7 @@ app.use(express.static('dist/wwwroot'));
 app.use(express.json());
 // CORS
 app.use(cors());
-var router = express.Router();
-router.use('/font/:fontName?', (request, response, next) => {
-  new FontController().run(request, response, next);
-});
-app.use('/api', router);
+
 stepMvc(app, FontController);
 try {
   app.listen(80);

@@ -64,6 +64,11 @@ export function stepMvc(
     for (let method in controller.prototype) {
       let func = controller.prototype[method];
 
+      let args = func.toString();
+      args = args.substring(args.indexOf('(') + 1);
+      args = args.substring(0, args.indexOf(')'));
+      args = args.split(',').map(x => x.trim());
+
       let handler = (request, response, next) => {
         var argValues = [];
         for (var arg of args) {
@@ -73,34 +78,39 @@ export function stepMvc(
             argValues.push(eval(arg));
           }
         }
+
+        console.log(request.path);
         var result = (func as Function).apply(null, argValues);
+
         if (result) {
-          response.json(result);
+          console.log(result);
+          if (result instanceof Promise) {
+            result.then(x => {
+              response.json(x);
+            });
+          } else {
+            response.json(result);
+          }
         }
       };
 
-      let args = func.toString();
-      args = args.substring(args.indexOf('(') + 1);
-      args = args.substring(0, args.indexOf(')'));
-      args = args.split(',').map(x => x.trim());
-
       if (func instanceof Function && func.attributes) {
-        if (func.attributes.httpGet) {
+        if (func.attributes.httpGet !== undefined) {
           app.get(
             controller['attributes'].route + func.attributes.httpGet,
             handler
           );
-        } else if (func.attributes.httpPost) {
+        } else if (func.attributes.httpPost !== undefined) {
           app.post(
             controller['attributes'].route + func.attributes.httpPost,
             handler
           );
-        } else if (func.attributes.httpPut) {
+        } else if (func.attributes.httpPut !== undefined) {
           app.put(
             controller['attributes'].route + func.attributes.httpPut,
             handler
           );
-        } else if (func.attributes.httpDelete) {
+        } else if (func.attributes.httpDelete !== undefined) {
           app.delete(
             controller['attributes'].route + func.attributes.httpDelete,
             handler

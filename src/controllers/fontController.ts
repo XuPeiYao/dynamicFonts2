@@ -2,30 +2,36 @@ import * as express from 'express';
 import * as fontmin from 'fontmin';
 import { ControllerBase } from '../base/controllerBase';
 import * as fs from 'fs';
-import { route, httpGet } from '../middlewares/controllerMiddleware';
+import { route, httpGet, httpPost } from '../middlewares/controllerMiddleware';
 
 @route('/api/Font')
 export class FontController extends ControllerBase {
-  @httpGet('/testMethod')
+  @httpGet('')
   public get(request: express.Request, response: express.Response) {
-    fs.readdir('fonts', (err, files) => {
-      response.json(
-        files.map(x => {
-          var segments = x.split('.');
+    return new Promise((res, rej) => {
+      fs.readdir('fonts', (err, files) => {
+        let result = files.map(x => {
+          let segments = x.split('.');
           if (segments.length > 1) {
             segments.splice(-1, 1);
           }
           return segments.join('.');
-        })
-      );
+        });
+        res(result);
+      });
     });
   }
 
-  public post(request: express.Request, response: express.Response) {
+  @httpPost('/:fontName')
+  public post(
+    fontName: string,
+    request: express.Request,
+    response: express.Response
+  ) {
     console.info('%s 要求產生字體 %s', request.ip, request.params.fontName);
 
     var font = new fontmin()
-      .src('fonts/' + request.params.fontName + '.*') //取出字體
+      .src('fonts/' + fontName + '.*') //取出字體
       .use(fontmin.otf2ttf())
       .use(
         fontmin.glyph({
