@@ -1,8 +1,22 @@
 import * as express from 'express';
 import * as fontmin from 'fontmin';
 import { ControllerBase } from '../base/controllerBase';
+import * as fs from 'fs';
 
 export class FontController extends ControllerBase {
+  public get(request: express.Request, response: express.Response) {
+    fs.readdir('fonts', (err, files) => {
+      response.json(
+        files.map(x => {
+          var segments = x.split('.');
+          if (segments.length > 1) {
+            segments.splice(-1, 1);
+          }
+          return segments.join('.');
+        })
+      );
+    });
+  }
   public post(request: express.Request, response: express.Response) {
     console.info('%s 要求產生字體 %s', request.ip, request.params.fontName);
 
