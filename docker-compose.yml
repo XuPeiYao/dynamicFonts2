@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   dynamic-font2:
-    image: xupeiyao/dynamic-font2:1.0.0
+    image: xupeiyao/dynamic-font2:1.0.1
     build:
       context: .
       dockerfile: Dockerfile
